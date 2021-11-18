@@ -1,0 +1,38 @@
+{
+	"name": "dataflow-backend",
+
+	// Path that the Docker build should be run from relative to devcontainer.json. 
+	// For example, a value of ".." would allow you to reference content in sibling directories. Defaults to "."
+	"context": "..",
+
+	// Use either the Dockerfile or docker-compose.yml to create the Docker container
+	// "dockerFile": "Dockerfile",
+	"dockerComposeFile": "docker-compose.yml",
+
+	// Required if using dockerComposeFile. The name of the service VS Code should connect to once running.
+	// The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+	"service": "dev_container",
+	
+	// The optional 'workspaceFolder' property is the path VS Code should open by default when
+	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
+	"workspaceFolder": "/workspace",
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"python.pythonPath": "/usr/local/bin/python",
+		"python.languageServer": "Pylance",
+		"python.linting.enabled": true,
+		"python.formatting.blackPath": "/usr/local/bin/black",
+		"python.formatting.provider": "black",
+		"editor.formatOnSave": true,
+	},
+
+
+	"extensions": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"cweijan.vscode-database-client2"
+	],
+
+}
