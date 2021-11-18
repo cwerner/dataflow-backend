@@ -1,0 +1,29 @@
+# Base image
+FROM python:3.9
+
+# Install Google Chrome for Selenium WebDriver integration testing
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+RUN apt-get -y update && \
+    apt-get install -y google-chrome-stable git && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install ChromeDriver
+RUN apt-get install -yqq unzip
+RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+
+# Set display port to avoid crash in Selenium WebDriver integration testing
+ENV DISPLAY=:99
+
+# Install Poetry for package management
+RUN pip3 install --upgrade pip setuptools wheel && \
+    pip3 install poetry==1.1.11
+
+# Install packages with Poetry,
+# including development packages like Black and PyLint
+COPY poetry.lock pyproject.toml /
+RUN poetry config virtualenvs.create false && \
+  poetry install --no-interaction --no-ansi
